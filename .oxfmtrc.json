@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 80,
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "proseWrap": "preserve",
+  "ignorePatterns": [
+    ".agents/**",
+    "dist/**",
+    "**/dist/**",
+    "**/node_modules/**",
+    "*.tgz"
+  ]
+}
