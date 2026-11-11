@@ -1,0 +1,61 @@
+---
+title: SnapZoom
+description: 注目したい場所へ一気に寄り、少し行き過ぎてから戻ります。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<CameraPreview demo="SnapZoom" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { useMemo } from 'react'
+import { useVideoConfig } from 'remotion'
+import { SceneLayer, SceneStage, secondsToFrameRange } from 'framoo/core'
+import { snapZoom } from 'framoo/camera/moves'
+
+export const SnapZoomPreview = () => {
+  const { fps } = useVideoConfig()
+  const camera = useMemo(
+    () => ({
+      moves: [
+        snapZoom({
+          ...secondsToFrameRange(0, 2.5, fps),
+          focus: { x: 0.68, y: 0.34 },
+          zoom: 2.1,
+          holdBeforeInFrames: secondsToFrameRange(0, 11 / 30, fps)
+            .durationInFrames,
+        }),
+      ],
+    }),
+    [fps],
+  )
+
+  return (
+    <SceneStage camera={camera}>
+      <SceneLayer followsCamera>
+        {null /* 背景画像など、カメラと一緒に動かすレイヤーを置く */}
+      </SceneLayer>
+    </SceneStage>
+  )
+}
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop                 | Type               | Default | Description                              |
+| -------------------- | ------------------ | ------- | ---------------------------------------- |
+| `from`               | `number`           | —       | 開始フレーム。                           |
+| `durationInFrames`   | `number`           | —       | 動きの長さをフレーム数で指定。           |
+| `focus`              | `CameraPoint`      | —       | ズーム後に画面中央へ置く焦点。           |
+| `zoom`               | `number`           | —       | 目標ズーム倍率。                         |
+| `holdBeforeInFrames` | `number`           | `0`     | ズーム開始前に現在の画を保つフレーム数。 |
+| `overshoot`          | `number`           | `0.06`  | 目標を通り越す割合。`0.06`は6%。         |
+| `easing`             | `CameraMoveEasing` | `rush`  | 焦点へ近づく区間の補間。                 |

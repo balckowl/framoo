@@ -1,0 +1,41 @@
+---
+title: FrameOverlay
+slug: atmosphere/frame/frame-overlay
+description: 画面の内側に枠線を重ねます。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<AtmospherePreview demo="FrameOverlayDemo" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { SceneLayer, SceneStage } from 'framoo/core'
+import { FrameOverlay } from 'framoo/atmosphere'
+
+export const FrameOverlayPreview = () => (
+  <SceneStage>
+    <SceneLayer followsCamera>
+      {/* 背景画像など */}
+      <FrameOverlay inset={56} thickness={3} opacity={0.9} />
+    </SceneLayer>
+  </SceneStage>
+)
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop        | Type     | Default   | Description                            |
+| ----------- | -------- | --------- | -------------------------------------- |
+| `inset`     | `number` | `56`      | 画面端から枠までの距離。ピクセル単位。 |
+| `thickness` | `number` | `2`       | 線の太さ。ピクセル単位。               |
+| `color`     | `string` | `#ffffff` | 枠線の色。                             |
+| `opacity`   | `number` | `0.9`     | 枠線の不透明度。0から1。               |
+| `radius`    | `number` | `0`       | 角丸の半径。ピクセル単位。0は直角。    |

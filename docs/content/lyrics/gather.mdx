@@ -1,0 +1,83 @@
+---
+title: LyricGather
+slug: lyrics/patterns/gather
+description: 散らばった文字が集まり、歌詞の形に整います。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<LyricsPreview demo="LyricGather" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { AbsoluteFill, useVideoConfig } from 'remotion'
+import { secondsToFrameRange } from 'framoo/core'
+import { LyricsLayout, LyricGather } from 'framoo/lyrics'
+
+export const LyricGatherPreview = () => {
+  const { fps } = useVideoConfig()
+  const lyricTiming = secondsToFrameRange(0.5, 5, fps)
+  const framesForSeconds = (seconds: number) =>
+    secondsToFrameRange(0, seconds, fps).durationInFrames
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: '#17191f' }}>
+      {/* 背景画像など */}
+      <LyricsLayout>
+        <LyricGather
+          {...lyricTiming}
+          position={{ x: 0.5, y: 0.745 }}
+          anchor="center"
+          size="base"
+          motion={{
+            settleDurationInFrames: framesForSeconds(22 / 30),
+            staggerInFrames: framesForSeconds(2 / 30),
+            spreadEm: 1.8,
+            rotationDegrees: 12,
+            seed: 4,
+            easing: 'ease-out',
+          }}
+        >
+          散らばった夢のかけらを
+        </LyricGather>
+      </LyricsLayout>
+    </AbsoluteFill>
+  )
+}
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop               | Type                   | Default                          | Description                                                |
+| ------------------ | ---------------------- | -------------------------------- | ---------------------------------------------------------- |
+| `children`         | `string`               | —                                | 表示する歌詞。                                             |
+| `from`             | `number`               | `0`                              | 表示を始めるフレーム。                                     |
+| `durationInFrames` | `number`               | 未指定（コンポジション終端まで） | タイムライン上で表示する長さ。フレーム単位。               |
+| `name`             | `string`               | `LyricGather position`           | Remotion Studioのタイムラインに表示するラベル。            |
+| `position`         | `LyricPosition`        | —                                | 配置位置。`{ x, y }`の各値は0から1の割合。                 |
+| `anchor`           | `LyricAnchor`          | `center`                         | positionに合わせる歌詞側の基準点。                         |
+| `safeArea`         | `LyricSafeAreaMode`    | `respect`                        | `respect`はセーフエリア基準、`ignore`は画面全体基準。      |
+| `size`             | `LyricTypographySize`  | `base`                           | 文字サイズ。`xs`、`sm`、`md`、`base`、`xl`、`2xl`、`4xl`。 |
+| `orientation`      | `LyricTextOrientation` | `horizontal`                     | 文字方向。`horizontal`または`vertical`。                   |
+| `rotationDegrees`  | `number`               | `0`                              | 歌詞全体の回転角度。角度を度単位で指定。                   |
+| `autoWrap`         | `boolean`              | `false`                          | 自動折り返しを有効にする。明示的な改行は常に維持。         |
+| `motion`           | `LyricGatherMotion`    | `{}`                             | このパターン固有のアニメーション設定。下表を参照。         |
+
+### `motion` の設定
+
+| Prop                     | Type                                           | Default    | Description                                        |
+| ------------------------ | ---------------------------------------------- | ---------- | -------------------------------------------------- |
+| `settleDurationInFrames` | `number`                                       | `20`       | 各文字が最終位置へ集まる長さ。                     |
+| `staggerInFrames`        | `number`                                       | `2`        | 文字ごとの開始間隔。                               |
+| `delayInFrames`          | `number`                                       | `0`        | 最初の文字が始まるまでの待ち時間。                 |
+| `spreadEm`               | `number`                                       | `1.8`      | 文字の初期位置が完成形から離れる最大距離。em単位。 |
+| `rotationDegrees`        | `number`                                       | `18`       | 文字の初期回転の最大角度。角度を度単位で指定。     |
+| `seed`                   | `number`                                       | `0`        | 文字の初期位置を決める固定値。                     |
+| `easing`                 | `linear \| ease-in \| ease-out \| ease-in-out` | `ease-out` | 文字が集まる速度。                                 |

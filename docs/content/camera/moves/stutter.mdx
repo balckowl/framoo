@@ -1,0 +1,64 @@
+---
+title: Stutter
+description: 複数の構図を短い間隔で切り替え、跳ねるような動きを作ります。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<CameraPreview demo="Stutter" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { useMemo } from 'react'
+import { useVideoConfig } from 'remotion'
+import { SceneLayer, SceneStage, secondsToFrameRange } from 'framoo/core'
+import { stutter } from 'framoo/camera/moves'
+
+export const StutterPreview = () => {
+  const { fps } = useVideoConfig()
+  const camera = useMemo(() => {
+    const holdRange = secondsToFrameRange(0, 0.5, fps)
+
+    return {
+      moves: [
+        stutter({
+          from: holdRange.from,
+          holdDurationInFrames: holdRange.durationInFrames,
+          repeats: 2,
+          poses: [
+            { x: 0.5, y: 0.5, zoom: 1.05, rotation: 0 },
+            { x: 0.68, y: 0.34, zoom: 1.55, rotation: -2 },
+            { x: 0.32, y: 0.65, zoom: 1.55, rotation: 2 },
+            { x: 0.5, y: 0.5, zoom: 1.05, rotation: 0 },
+          ],
+        }),
+      ],
+    }
+  }, [fps])
+
+  return (
+    <SceneStage camera={camera}>
+      <SceneLayer followsCamera>
+        {null /* 背景画像など、カメラと一緒に動かすレイヤーを置く */}
+      </SceneLayer>
+    </SceneStage>
+  )
+}
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop                   | Type                    | Default | Description                    |
+| ---------------------- | ----------------------- | ------- | ------------------------------ |
+| `from`                 | `number`                | —       | 開始フレーム。                 |
+| `durationInFrames`     | `number`                | —       | 動きの長さをフレーム数で指定。 |
+| `holdDurationInFrames` | `number`                | —       | 各構図を保つフレーム数。       |
+| `poses`                | `readonly CameraPose[]` | —       | 順番に切り替えるカメラ構図。   |
+| `repeats`              | `number`                | `1`     | 構図の並びを繰り返す回数。     |

@@ -1,0 +1,46 @@
+---
+title: ColorWash
+slug: atmosphere/color/color-wash
+description: 画面全体の色合いを、指定した2色の間でゆっくり変化させます。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<AtmospherePreview demo="ColorWashDemo" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { SceneLayer, SceneStage } from 'framoo/core'
+import { ColorWash } from 'framoo/atmosphere'
+
+export const ColorWashPreview = () => (
+  <SceneStage>
+    <SceneLayer followsCamera>
+      {/* 背景画像など */}
+      <ColorWash
+        from="#e66d75"
+        to="#4038a8"
+        opacity={0.28}
+        cycleDurationInFrames={240}
+      />
+    </SceneLayer>
+  </SceneStage>
+)
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop                    | Type             | Default        | Description                        |
+| ----------------------- | ---------------- | -------------- | ---------------------------------- |
+| `from`                  | `string`         | —              | グラデーションの1色目。CSS color。 |
+| `to`                    | `string`         | —              | グラデーションの2色目。CSS color。 |
+| `opacity`               | `number`         | `0.32`         | 重ねるレイヤーの不透明度。0から1。 |
+| `cycleDurationInFrames` | `number`         | 省略時は12秒分 | 色が往復する1サイクルの長さ。      |
+| `blendMode`             | `CSS blend mode` | `normal`       | 背面のレイヤーとの合成方法。       |

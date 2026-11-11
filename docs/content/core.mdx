@@ -1,0 +1,61 @@
+---
+title: Core
+description: SceneStageとSceneLayerで、ひとつのカメラトラックに追従するレイヤーと画面に固定するレイヤーを組み立てます。
+sidebar:
+  order: 3
+noindex: true
+---
+
+<CorePreview />
+
+## <code>SceneStage</code>
+
+コンポジションの表示範囲を作り、必要に応じてカメラトラックを受け取ります。画面をクリップするため、通常は<code>AbsoluteFill</code>で外側から包む必要はありません。
+
+```tsx
+<SceneStage camera={camera}>{/* SceneLayerを配置 */}</SceneStage>
+```
+
+カメラを使わない場合は<code>camera</code>を省略できます。複数カメラを切り替えるコンポーネントではなく、このStage内のレイヤーが共有するひとつのカメラです。
+
+## <code>SceneLayer</code>
+
+<code>SceneStage</code>の中に置く全画面レイヤーです。<code>followsCamera</code>
+でカメラに追従するか、画面に固定するかを選びます。後に書いたレイヤーほど手前に重なります。
+
+| 設定                                         | 動作                                   | よく使うもの                                     |
+| -------------------------------------------- | -------------------------------------- | ------------------------------------------------ |
+| <code>followsCamera</code>                   | カメラに追従する                       | 背景、前景、人物、カメラに合わせて動く装飾       |
+| <code>followsCamera=&#123;false&#125;</code> | 画面に固定する                         | 歌詞、字幕、画面端のラベル、画面固定オーバーレイ |
+| <code>depth=&#123;0.7&#125;</code>           | カメラ移動を弱める                     | 遠景のパララックス                               |
+| <code>depth=&#123;1&#125;</code>             | カメラ移動をそのまま適用する（既定値） | 通常の画像レイヤー                               |
+| <code>depth=&#123;1.2&#125;</code>           | カメラ移動を強める                     | 手前に見せる前景レイヤー                         |
+
+<code>depth</code>は<code>followsCamera=&#123;true&#125;</code>
+のときだけ有効です。背景と人物を分けていない一枚絵でも、背景画像をひとつの
+<code>SceneLayer</code>に入れて使えます。
+
+```tsx
+<SceneStage camera={camera}>
+  <SceneLayer followsCamera depth={0.8}>
+    <Background />
+  </SceneLayer>
+  <SceneLayer followsCamera depth={1.15}>
+    <ForegroundCharacter />
+  </SceneLayer>
+  <SceneLayer followsCamera={false}>
+    <Lyrics />
+  </SceneLayer>
+</SceneStage>
+```
+
+## <code>secondsToFrameRange</code>
+
+開始秒、終了秒、fpsを指定すると、Framooのカメラの動きに使うフレーム範囲を作れます。返り値には<code>from</code>と<code>durationInFrames</code>が含まれます。
+
+```tsx
+moveTo({
+  ...secondsToFrameRange(0, 4, fps),
+  to: { x: 0.54, y: 0.46, zoom: 1.12 },
+})
+```

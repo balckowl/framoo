@@ -1,0 +1,77 @@
+---
+title: Quick Start
+description: 背景、カメラ、歌詞を組み合わせてFramooの最初のシーンを作ります。
+sidebar:
+  order: 2
+noindex: true
+---
+
+## 最初のシーン
+
+この例では、背景にカメラをゆっくり寄せ、歌詞は画面に固定して表示します。
+
+```tsx
+import { useMemo } from 'react'
+import { Img, staticFile, useVideoConfig } from 'remotion'
+import {
+  SceneLayer,
+  SceneStage,
+  secondsToFrameRange,
+  secondsToFrames,
+} from 'framoo/core'
+import { moveTo } from 'framoo/camera/moves'
+import { LyricsLayout, LyricFade } from 'framoo/lyrics'
+
+export const FirstScene = () => {
+  const { fps } = useVideoConfig()
+  const camera = useMemo(
+    () => ({
+      moves: [
+        moveTo({
+          ...secondsToFrameRange(0, 4, fps),
+          to: { x: 0.54, y: 0.46, zoom: 1.12 },
+        }),
+      ],
+    }),
+    [fps],
+  )
+
+  return (
+    <SceneStage camera={camera}>
+      <SceneLayer followsCamera>
+        <Img
+          src={staticFile('background.png')}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        />
+      </SceneLayer>
+
+      <SceneLayer followsCamera={false}>
+        <LyricsLayout>
+          <LyricFade
+            from={secondsToFrames(0.5, fps)}
+            durationInFrames={secondsToFrames(3, fps)}
+            position={{ x: 0.5, y: 0.78 }}
+            size="base"
+            anchor="center"
+          >
+            最初のシーン
+          </LyricFade>
+        </LyricsLayout>
+      </SceneLayer>
+    </SceneStage>
+  )
+}
+```
+
+## 次に読む
+
+- [Core](/core)：複数の画像レイヤーと画面固定要素を整理する
+- [Camera Moves](/camera/moves)：構図を変えるカメラの動き
+- [Lyrics](/lyrics)：歌詞パターン、位置、縦書き、サイズ
+- [Atmosphere](/atmosphere)：光や粒子などのオーバーレイ

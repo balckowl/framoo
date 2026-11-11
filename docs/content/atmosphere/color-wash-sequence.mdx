@@ -1,0 +1,77 @@
+---
+title: ColorWashSequence
+slug: atmosphere/color/color-wash-sequence
+description: 指定した順番とタイミングで、画面に重ねる色を切り替えます。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<AtmospherePreview demo="ColorWashSequenceDemo" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { useVideoConfig } from 'remotion'
+import {
+  SceneLayer,
+  SceneStage,
+  secondsToFrameRange,
+  secondsToFrames,
+} from 'framoo/core'
+import { ColorWashSequence } from 'framoo/atmosphere'
+
+export const ColorWashSequencePreview = () => {
+  const { fps } = useVideoConfig()
+  const transitionDuration = secondsToFrameRange(0, 1.5, fps).durationInFrames
+
+  return (
+    <SceneStage>
+      <SceneLayer followsCamera>
+        {/* 背景画像など */}
+        <ColorWashSequence
+          cues={[
+            {
+              atFrame: secondsToFrames(0, fps),
+              wash: 'linear-gradient(135deg, #0f2d53, #170a27)',
+              opacity: 0.2,
+            },
+            {
+              atFrame: secondsToFrames(2.4, fps),
+              wash: 'linear-gradient(135deg, #ff705e, #2e125b)',
+              opacity: 0.34,
+            },
+            {
+              atFrame: secondsToFrames(5, fps),
+              wash: 'linear-gradient(135deg, #11607e, #0b143a)',
+              opacity: 0.3,
+            },
+          ]}
+          transitionInFrames={transitionDuration}
+        />
+      </SceneLayer>
+    </SceneStage>
+  )
+}
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop                 | Type                      | Default  | Description                                  |
+| -------------------- | ------------------------- | -------- | -------------------------------------------- |
+| `cues`               | `readonly ColorWashCue[]` | —        | 時間順に並べた色処理のキュー。               |
+| `transitionInFrames` | `number`                  | `0`      | 次のキューへ切り替える前のクロスフェード長。 |
+| `blendMode`          | `CSS blend mode`          | `normal` | 背面のレイヤーとの合成方法。                 |
+
+### `ColorWashCue`
+
+| Prop      | Type     | Default | Description                                   |
+| --------- | -------- | ------- | --------------------------------------------- |
+| `atFrame` | `number` | —       | キューを開始するフレーム。                    |
+| `wash`    | `string` | —       | 重ねるCSS背景値。単色やグラデーションを指定。 |
+| `opacity` | `number` | `0.32`  | キューの不透明度。0から1。                    |

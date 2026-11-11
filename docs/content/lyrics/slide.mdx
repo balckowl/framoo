@@ -1,0 +1,84 @@
+---
+title: LyricSlide
+slug: lyrics/patterns/slide
+description: 歌詞が左か右から滑り込むように表示されます。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<LyricsPreview demo="LyricSlide" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { AbsoluteFill, useVideoConfig } from 'remotion'
+import { secondsToFrameRange } from 'framoo/core'
+import { LyricsLayout, LyricSlide } from 'framoo/lyrics'
+
+export const LyricSlidePreview = () => {
+  const { fps } = useVideoConfig()
+  const lyricTiming = secondsToFrameRange(0.5, 5, fps)
+  const framesForSeconds = (seconds: number) =>
+    secondsToFrameRange(0, seconds, fps).durationInFrames
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: '#17191f' }}>
+      {/* 背景画像など */}
+      <LyricsLayout>
+        <LyricSlide
+          {...lyricTiming}
+          position={{ x: 0.5, y: 0.76 }}
+          anchor="center"
+          size="base"
+          enterFrom="right"
+          motion={{
+            distanceEm: 1.25,
+            durationInFrames: framesForSeconds(14 / 30),
+            easing: 'ease-out',
+          }}
+        >
+          風を切って走り出した
+        </LyricSlide>
+      </LyricsLayout>
+    </AbsoluteFill>
+  )
+}
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop               | Type                   | Default                          | Description                                                |
+| ------------------ | ---------------------- | -------------------------------- | ---------------------------------------------------------- |
+| `children`         | `ReactNode`            | —                                | 表示する歌詞。                                             |
+| `from`             | `number`               | `0`                              | 表示を始めるフレーム。                                     |
+| `durationInFrames` | `number`               | 未指定（コンポジション終端まで） | タイムライン上で表示する長さ。フレーム単位。               |
+| `name`             | `string`               | `LyricSlide position`            | Remotion Studioのタイムラインに表示するラベル。            |
+| `position`         | `LyricPosition`        | —                                | 配置位置。`{ x, y }`の各値は0から1の割合。                 |
+| `anchor`           | `LyricAnchor`          | `center`                         | positionに合わせる歌詞側の基準点。                         |
+| `safeArea`         | `LyricSafeAreaMode`    | `respect`                        | `respect`はセーフエリア基準、`ignore`は画面全体基準。      |
+| `size`             | `LyricTypographySize`  | `base`                           | 文字サイズ。`xs`、`sm`、`md`、`base`、`xl`、`2xl`、`4xl`。 |
+| `orientation`      | `LyricTextOrientation` | `horizontal`                     | 文字方向。`horizontal`または`vertical`。                   |
+| `rotationDegrees`  | `number`               | `0`                              | 歌詞全体の回転角度。角度を度単位で指定。                   |
+| `autoWrap`         | `boolean`              | `false`                          | 自動折り返しを有効にする。明示的な改行は常に維持。         |
+| `motion`           | `LyricSlideMotion`     | `{}`                             | このパターン固有のアニメーション設定。下表を参照。         |
+
+### 追加Propsと`motion`の設定
+
+| Prop        | Type            | Default | Description    |
+| ----------- | --------------- | ------- | -------------- |
+| `enterFrom` | `left \| right` | `left`  | 歌詞が入る側。 |
+
+### `motion` の設定
+
+| Prop               | Type                                           | Default    | Description                      |
+| ------------------ | ---------------------------------------------- | ---------- | -------------------------------- |
+| `distanceEm`       | `number`                                       | `1.25`     | 最終位置からの移動距離。em単位。 |
+| `durationInFrames` | `number`                                       | `14`       | 最終位置に到達するまでの長さ。   |
+| `delayInFrames`    | `number`                                       | `0`        | スライド開始までの待ち時間。     |
+| `easing`           | `linear \| ease-in \| ease-out \| ease-in-out` | `ease-out` | スライドの速度変化。             |

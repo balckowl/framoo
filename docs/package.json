@@ -1,0 +1,24 @@
+{
+  "name": "framoo-docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "blume dev",
+    "build": "blume build && node scripts/add-noindex-header.mjs",
+    "doctor": "blume doctor"
+  },
+  "dependencies": {
+    "@remotion/media": "4.0.541",
+    "@remotion/player": "4.0.541",
+    "blume": "2.2.6",
+    "framoo": "^0.1.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "4.0.541"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "~6.0.3"
+  }
+}

@@ -1,0 +1,66 @@
+---
+title: ShakeOnBeat
+description: 拍に合わせて、カメラを短く揺らします。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<CameraPreview demo="ShakeOnBeat" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { useMemo } from 'react'
+import { useVideoConfig } from 'remotion'
+import {
+  SceneLayer,
+  SceneStage,
+  secondsToFrameRange,
+  secondsToFrames,
+} from 'framoo/core'
+import { shakeOnBeat } from 'framoo/camera/effects'
+
+export const ShakeOnBeatPreview = () => {
+  const { fps } = useVideoConfig()
+  const camera = useMemo(() => {
+    const decayRange = secondsToFrameRange(0, 8 / 30, fps)
+    const beatTimesInSeconds = [0.7, 1.5, 2.3, 3.1, 3.9]
+
+    return {
+      effects: [
+        shakeOnBeat({
+          beatsInFrames: beatTimesInSeconds.map((seconds) =>
+            secondsToFrames(seconds, fps),
+          ),
+          intensity: 16,
+          rotation: 0.85,
+          decayInFrames: decayRange.durationInFrames,
+        }),
+      ],
+    }
+  }, [fps])
+
+  return (
+    <SceneStage camera={camera}>
+      <SceneLayer followsCamera>
+        {null /* 背景画像など、カメラと一緒に動かすレイヤーを置く */}
+      </SceneLayer>
+    </SceneStage>
+  )
+}
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop            | Type                | Default            | Description                          |
+| --------------- | ------------------- | ------------------ | ------------------------------------ |
+| `beatsInFrames` | `readonly number[]` | —                  | 揺れを始める拍のフレーム位置。       |
+| `intensity`     | `number`            | `8`                | 拍ごとの移動量。ピクセル単位。       |
+| `rotation`      | `number`            | `0.45`             | 拍ごとの回転幅。角度を度単位で指定。 |
+| `decayInFrames` | `number`            | 省略時は約0.22秒分 | 各拍の揺れが弱まるまでの長さ。       |

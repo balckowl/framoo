@@ -1,0 +1,54 @@
+---
+title: CutTo
+description: カメラの構図を一瞬で切り替え、そのまま保ちます。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<CameraPreview demo="CutTo" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { useMemo } from 'react'
+import { useVideoConfig } from 'remotion'
+import { SceneLayer, SceneStage, secondsToFrameRange } from 'framoo/core'
+import { cutTo } from 'framoo/camera/moves'
+
+export const CutToPreview = () => {
+  const { fps } = useVideoConfig()
+  const camera = useMemo(
+    () => ({
+      moves: [
+        cutTo({
+          ...secondsToFrameRange(1.5, 4, fps),
+          to: { x: 0.7, y: 0.36, zoom: 1.55, rotation: 5 },
+        }),
+      ],
+    }),
+    [fps],
+  )
+
+  return (
+    <SceneStage camera={camera}>
+      <SceneLayer followsCamera>
+        {null /* 背景画像など、カメラと一緒に動かすレイヤーを置く */}
+      </SceneLayer>
+    </SceneStage>
+  )
+}
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop               | Type         | Default | Description                    |
+| ------------------ | ------------ | ------- | ------------------------------ |
+| `from`             | `number`     | —       | 開始フレーム。                 |
+| `durationInFrames` | `number`     | —       | 動きの長さをフレーム数で指定。 |
+| `to`               | `CameraPose` | —       | 瞬時に切り替えるカメラ構図。   |

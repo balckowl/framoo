@@ -1,0 +1,59 @@
+---
+title: ColorPulse
+slug: atmosphere/lighting/color-pulse
+description: 指定した色の光が、拍に合わせて短く明滅します。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<AtmospherePreview demo="ColorPulseDemo" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { useVideoConfig } from 'remotion'
+import {
+  SceneLayer,
+  SceneStage,
+  secondsToFrameRange,
+  secondsToFrames,
+} from 'framoo/core'
+import { ColorPulse } from 'framoo/atmosphere'
+
+export const ColorPulsePreview = () => {
+  const { fps } = useVideoConfig()
+  const cueTimesInSeconds = [0, 1.6, 3.2, 4.8]
+  const decayInFrames = secondsToFrameRange(0, 11 / 30, fps).durationInFrames
+
+  return (
+    <SceneStage>
+      <SceneLayer followsCamera>
+        {/* 背景画像など */}
+        <ColorPulse
+          cueFrames={cueTimesInSeconds.map((seconds) =>
+            secondsToFrames(seconds, fps),
+          )}
+          color="#ff9d36"
+          intensity={0.2}
+          decayInFrames={decayInFrames}
+        />
+      </SceneLayer>
+    </SceneStage>
+  )
+}
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop            | Type                | Default            | Description                  |
+| --------------- | ------------------- | ------------------ | ---------------------------- |
+| `cueFrames`     | `readonly number[]` | —                  | 光を点滅させるフレーム位置。 |
+| `color`         | `string`            | `#ffe3b4`          | 光の色。                     |
+| `intensity`     | `number`            | `0.18`             | 光の最大強さ。0から1。       |
+| `decayInFrames` | `number`            | 省略時は約0.24秒分 | 点滅が弱まるまでの長さ。     |
