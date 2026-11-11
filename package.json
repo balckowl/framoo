@@ -40,7 +40,6 @@
     }
   },
   "scripts": {
-    "dev": "npm run studio:playground",
     "build": "npm run build:library",
     "build:library": "vite build --config vite.lib.config.ts && tsc -p tsconfig.build.json",
     "prepack": "npm run build:library",
@@ -55,7 +54,9 @@
     "release": "changeset publish",
     "studio:playground": "npm run build:library && remotion studio playground/src/index.tsx --public-dir playground/public",
     "typecheck:playground": "tsc --noEmit --project playground/tsconfig.json",
-    "check:playground": "npm run build:library && npm run typecheck:playground"
+    "check:playground": "npm run build:library && npm run typecheck:playground",
+    "dev:studio": "npm run studio:playground",
+    "dev:docs": "npm --prefix docs run dev"
   },
   "devDependencies": {
     "@changesets/cli": "2.31.1",
