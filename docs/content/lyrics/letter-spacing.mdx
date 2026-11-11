@@ -1,0 +1,100 @@
+---
+title: LyricLetterSpacing
+slug: lyrics/patterns/letter-spacing
+description: 文字の間隔が少しずつ広がったり、狭まったりします。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<LyricsPreview demo="LyricLetterSpacing" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { AbsoluteFill, useVideoConfig } from 'remotion'
+import { secondsToFrameRange } from 'framoo/core'
+import { LyricsLayout, LyricLetterSpacing } from 'framoo/lyrics'
+
+export const LyricLetterSpacingPreview = () => {
+  const { fps } = useVideoConfig()
+  const lyricTiming = secondsToFrameRange(0.5, 5, fps)
+  const framesForSeconds = (seconds: number) =>
+    secondsToFrameRange(0, seconds, fps).durationInFrames
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: '#17191f' }}>
+      {/* 背景画像など */}
+      <LyricsLayout>
+        <LyricLetterSpacing
+          name="LyricLetterSpacing · expand"
+          {...lyricTiming}
+          position={{ x: 0.5, y: 0.38 }}
+          anchor="center"
+          size="base"
+          direction="expand"
+          motion={{
+            extraSpacingEm: 0.22,
+            durationInFrames: framesForSeconds(24 / 30),
+            easing: 'ease-out',
+          }}
+        >
+          昨日より少し遠くへ
+        </LyricLetterSpacing>
+        <LyricLetterSpacing
+          name="LyricLetterSpacing · contract"
+          {...lyricTiming}
+          position={{ x: 0.5, y: 0.72 }}
+          anchor="center"
+          size="base"
+          direction="contract"
+          motion={{
+            extraSpacingEm: 0.22,
+            durationInFrames: framesForSeconds(24 / 30),
+            easing: 'ease-out',
+          }}
+        >
+          昨日より少し遠くへ
+        </LyricLetterSpacing>
+      </LyricsLayout>
+    </AbsoluteFill>
+  )
+}
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop               | Type                       | Default                          | Description                                                |
+| ------------------ | -------------------------- | -------------------------------- | ---------------------------------------------------------- |
+| `children`         | `ReactNode`                | —                                | 表示する歌詞。                                             |
+| `from`             | `number`                   | `0`                              | 表示を始めるフレーム。                                     |
+| `durationInFrames` | `number`                   | 未指定（コンポジション終端まで） | タイムライン上で表示する長さ。フレーム単位。               |
+| `name`             | `string`                   | `LyricLetterSpacing position`    | Remotion Studioのタイムラインに表示するラベル。            |
+| `position`         | `LyricPosition`            | —                                | 配置位置。`{ x, y }`の各値は0から1の割合。                 |
+| `anchor`           | `LyricAnchor`              | `center`                         | positionに合わせる歌詞側の基準点。                         |
+| `safeArea`         | `LyricSafeAreaMode`        | `respect`                        | `respect`はセーフエリア基準、`ignore`は画面全体基準。      |
+| `size`             | `LyricTypographySize`      | `base`                           | 文字サイズ。`xs`、`sm`、`md`、`base`、`xl`、`2xl`、`4xl`。 |
+| `orientation`      | `LyricTextOrientation`     | `horizontal`                     | 文字方向。`horizontal`または`vertical`。                   |
+| `rotationDegrees`  | `number`                   | `0`                              | 歌詞全体の回転角度。角度を度単位で指定。                   |
+| `autoWrap`         | `boolean`                  | `false`                          | 自動折り返しを有効にする。明示的な改行は常に維持。         |
+| `motion`           | `LyricLetterSpacingMotion` | `{}`                             | このパターン固有のアニメーション設定。下表を参照。         |
+
+### 追加Propsと`motion`の設定
+
+| Prop        | Type                 | Default  | Description                    |
+| ----------- | -------------------- | -------- | ------------------------------ |
+| `direction` | `expand \| contract` | `expand` | 文字間隔を広げるか、狭めるか。 |
+
+### `motion` の設定
+
+| Prop               | Type                                           | Default    | Description                                                          |
+| ------------------ | ---------------------------------------------- | ---------- | -------------------------------------------------------------------- |
+| `extraSpacingEm`   | `number`                                       | `0.25`     | 標準間隔との差。`contract`では最初にこの間隔から狭まります。em単位。 |
+| `durationInFrames` | `number`                                       | `20`       | 変化後の間隔に到達するまでの長さ。                                   |
+| `delayInFrames`    | `number`                                       | `0`        | 文字間隔が変わり始めるまでの待ち時間。                               |
+| `easing`           | `linear \| ease-in \| ease-out \| ease-in-out` | `ease-out` | 文字間隔が変わる速度。                                               |

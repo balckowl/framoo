@@ -1,0 +1,53 @@
+---
+title: Smoke
+slug: atmosphere/air/smoke
+description: 指定した位置から煙が立ち上る演出です。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<AtmospherePreview demo="SmokeDemo" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { SceneLayer, SceneStage } from 'framoo/core'
+import { Smoke } from 'framoo/atmosphere'
+
+export const SmokePreview = () => (
+  <SceneStage>
+    <SceneLayer followsCamera>
+      {/* 背景画像など */}
+      <Smoke
+        source={{ x: 0.2, y: 1 }}
+        color="#f1f0ed"
+        intensity={0.84}
+        puffCount={13}
+        spread={0.18}
+        rise={0.68}
+        speed={1.1}
+        softness={30}
+      />
+    </SceneLayer>
+  </SceneStage>
+)
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop        | Type              | Default               | Description                        |
+| ----------- | ----------------- | --------------------- | ---------------------------------- |
+| `source`    | `NormalizedPoint` | `{ x: 0.5, y: 0.98 }` | 煙の発生位置。x・yは画面内の割合。 |
+| `color`     | `string`          | `#bdbab7`             | 煙の色。                           |
+| `intensity` | `number`          | `0.5`                 | 煙の不透明度。0から1。             |
+| `puffCount` | `number`          | `11`                  | 重ねて描く煙の塊の数。             |
+| `spread`    | `number`          | `0.16`                | 画面幅に対する横方向の広がり。     |
+| `rise`      | `number`          | `0.58`                | 画面高さに対する上昇距離。         |
+| `speed`     | `number`          | `1`                   | 煙が発生する速度の倍率。           |
+| `softness`  | `number`          | `20`                  | ぼかし半径。ピクセル単位。         |

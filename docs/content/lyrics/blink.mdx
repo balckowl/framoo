@@ -1,0 +1,82 @@
+---
+title: LyricBlink
+slug: lyrics/patterns/blink
+description: 歌詞を指定した回数だけ点滅させて表示します。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<LyricsPreview demo="LyricBlink" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { AbsoluteFill, useVideoConfig } from 'remotion'
+import { secondsToFrameRange } from 'framoo/core'
+import { LyricsLayout, LyricBlink } from 'framoo/lyrics'
+
+export const LyricBlinkPreview = () => {
+  const { fps } = useVideoConfig()
+  const lyricTiming = secondsToFrameRange(0.5, 5, fps)
+  const framesForSeconds = (seconds: number) =>
+    secondsToFrameRange(0, seconds, fps).durationInFrames
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: '#17191f' }}>
+      {/* 背景画像など */}
+      <LyricsLayout>
+        <LyricBlink
+          {...lyricTiming}
+          position={{ x: 0.5, y: 0.76 }}
+          anchor="center"
+          size="base"
+          blinkCount={2}
+          motion={{
+            visibleDurationInFrames: framesForSeconds(4 / 30),
+            hiddenDurationInFrames: framesForSeconds(2 / 30),
+          }}
+        >
+          この瞬間もひとつのピース
+        </LyricBlink>
+      </LyricsLayout>
+    </AbsoluteFill>
+  )
+}
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop               | Type                   | Default                          | Description                                                |
+| ------------------ | ---------------------- | -------------------------------- | ---------------------------------------------------------- |
+| `children`         | `ReactNode`            | —                                | 表示する歌詞。                                             |
+| `from`             | `number`               | `0`                              | 表示を始めるフレーム。                                     |
+| `durationInFrames` | `number`               | 未指定（コンポジション終端まで） | タイムライン上で表示する長さ。フレーム単位。               |
+| `name`             | `string`               | `LyricBlink position`            | Remotion Studioのタイムラインに表示するラベル。            |
+| `position`         | `LyricPosition`        | —                                | 配置位置。`{ x, y }`の各値は0から1の割合。                 |
+| `anchor`           | `LyricAnchor`          | `center`                         | positionに合わせる歌詞側の基準点。                         |
+| `safeArea`         | `LyricSafeAreaMode`    | `respect`                        | `respect`はセーフエリア基準、`ignore`は画面全体基準。      |
+| `size`             | `LyricTypographySize`  | `base`                           | 文字サイズ。`xs`、`sm`、`md`、`base`、`xl`、`2xl`、`4xl`。 |
+| `orientation`      | `LyricTextOrientation` | `horizontal`                     | 文字方向。`horizontal`または`vertical`。                   |
+| `rotationDegrees`  | `number`               | `0`                              | 歌詞全体の回転角度。角度を度単位で指定。                   |
+| `autoWrap`         | `boolean`              | `false`                          | 自動折り返しを有効にする。明示的な改行は常に維持。         |
+| `motion`           | `LyricBlinkMotion`     | `{}`                             | このパターン固有のアニメーション設定。下表を参照。         |
+
+### `blinkCount`と`motion`の設定
+
+| Prop         | Type     | Default | Description            |
+| ------------ | -------- | ------- | ---------------------- |
+| `blinkCount` | `number` | `2`     | 消えて戻る点滅の回数。 |
+
+### `motion` の設定
+
+| Prop                      | Type     | Default | Description                    |
+| ------------------------- | -------- | ------- | ------------------------------ |
+| `delayInFrames`           | `number` | `0`     | 最初の点滅までの待ち時間。     |
+| `visibleDurationInFrames` | `number` | `4`     | 点滅ごとに歌詞を表示する長さ。 |
+| `hiddenDurationInFrames`  | `number` | `2`     | 点滅ごとに歌詞を隠す長さ。     |

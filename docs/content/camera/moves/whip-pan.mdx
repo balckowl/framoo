@@ -1,0 +1,63 @@
+---
+title: WhipPan
+description: カメラを勢いよく振り、目標を少し通り過ぎてから止めます。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<CameraPreview demo="WhipPan" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { useMemo } from 'react'
+import { useVideoConfig } from 'remotion'
+import { SceneLayer, SceneStage, secondsToFrameRange } from 'framoo/core'
+import { moveTo, whipPan } from 'framoo/camera/moves'
+
+export const WhipPanPreview = () => {
+  const { fps } = useVideoConfig()
+  const camera = useMemo(() => {
+    const setupRange = secondsToFrameRange(0, 0.37, fps)
+    const whipRange = secondsToFrameRange(0.37, 2.23, fps)
+
+    return {
+      moves: [
+        moveTo({
+          ...setupRange,
+          to: { x: 0.42, y: 0.5 },
+        }),
+        whipPan({
+          ...whipRange,
+          to: { x: 0.58, y: 0.5 },
+          overshoot: { x: 0.01, y: 0 },
+        }),
+      ],
+    }
+  }, [fps])
+
+  return (
+    <SceneStage camera={camera}>
+      <SceneLayer followsCamera>
+        {null /* 背景画像など、カメラと一緒に動かすレイヤーを置く */}
+      </SceneLayer>
+    </SceneStage>
+  )
+}
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop               | Type               | Default          | Description                      |
+| ------------------ | ------------------ | ---------------- | -------------------------------- |
+| `from`             | `number`           | —                | 開始フレーム。                   |
+| `durationInFrames` | `number`           | —                | 動きの長さをフレーム数で指定。   |
+| `to`               | `CameraPoint`      | —                | パンの終点となる焦点。           |
+| `overshoot`        | `CameraPoint`      | `{ x: 0, y: 0 }` | 目標を通り越す位置のオフセット。 |
+| `easing`           | `CameraMoveEasing` | `rush`           | 素早く振る区間の補間。           |

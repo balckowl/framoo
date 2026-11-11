@@ -1,0 +1,62 @@
+---
+title: TracePath
+description: 複数の注目点を、指定した順番になぞるようにカメラを動かします。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<CameraPreview demo="TracePath" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { useMemo } from 'react'
+import { useVideoConfig } from 'remotion'
+import { SceneLayer, SceneStage, secondsToFrameRange } from 'framoo/core'
+import { tracePath } from 'framoo/camera/moves'
+
+export const TracePathPreview = () => {
+  const { fps } = useVideoConfig()
+  const camera = useMemo(
+    () => ({
+      moves: [
+        tracePath({
+          ...secondsToFrameRange(0, 4.5, fps),
+          path: [
+            { x: 0.3, y: 0.36 },
+            { x: 0.7, y: 0.34 },
+            { x: 0.72, y: 0.68 },
+            { x: 0.35, y: 0.66 },
+          ],
+          zoom: 1.45,
+        }),
+      ],
+    }),
+    [fps],
+  )
+
+  return (
+    <SceneStage camera={camera}>
+      <SceneLayer followsCamera>
+        {null /* 背景画像など、カメラと一緒に動かすレイヤーを置く */}
+      </SceneLayer>
+    </SceneStage>
+  )
+}
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop               | Type                     | Default  | Description                    |
+| ------------------ | ------------------------ | -------- | ------------------------------ |
+| `from`             | `number`                 | —        | 開始フレーム。                 |
+| `durationInFrames` | `number`                 | —        | 動きの長さをフレーム数で指定。 |
+| `path`             | `readonly CameraPoint[]` | —        | たどる焦点を順番に並べた配列。 |
+| `zoom`             | `number`                 | —        | 経路上で保つズーム倍率。       |
+| `easing`           | `CameraMoveEasing`       | `smooth` | 焦点間を移動する区間の補間。   |

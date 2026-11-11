@@ -1,0 +1,53 @@
+---
+title: ParticleField
+slug: atmosphere/particle-field
+description: 5種類の粒子を画面に重ねます。
+noindex: true
+---
+
+ParticleFieldは、`preset`で粒子の種類を選び、画面に重ねるコンポーネントです。既定の種類は`dust`です。
+
+<Tabs>
+  <Tab title="Preview">
+
+<AtmospherePreview collection="particles" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { SceneLayer, SceneStage } from 'framoo/core'
+import { ParticleField } from 'framoo/atmosphere'
+
+export const ParticleFieldPreview = () => (
+  <SceneStage>
+    <SceneLayer followsCamera>
+      {/* 背景画像など */}
+      <ParticleField preset="snow" density={0.58} sizeScale={1} depth="mixed" />
+    </SceneLayer>
+  </SceneStage>
+)
+```
+
+  </Tab>
+</Tabs>
+
+## 粒子の種類
+
+| `preset` | 表示                               |
+| -------- | ---------------------------------- |
+| `dust`   | 細かな埃がゆっくり漂います。       |
+| `petals` | 花びらが画面を舞うように流れます。 |
+| `sparks` | 火花が画面の中で散ります。         |
+| `snow`   | 雪が画面に降ります。               |
+| `rain`   | 雨粒が画面を流れ落ちます。         |
+
+## API Reference
+
+| Prop        | Type             | Default      | Description                                |
+| ----------- | ---------------- | ------------ | ------------------------------------------ |
+| `preset`    | `ParticlePreset` | `dust`       | 表示する粒子の種類。上の一覧から選びます。 |
+| `density`   | `number`         | `0.18`       | 粒子数の目安。0から1。最大80個。           |
+| `sizeScale` | `number`         | `1`          | 粒子サイズの倍率。                         |
+| `color`     | `string`         | 種類ごとの色 | 全粒子に共通する色。省略時は種類ごとの色。 |
+| `depth`     | `ParticleDepth`  | `mixed`      | 粒子の奥行き。`near`、`mixed`、`far`。     |

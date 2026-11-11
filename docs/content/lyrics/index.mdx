@@ -1,0 +1,62 @@
+---
+sidebar:
+  hidden: true
+title: Lyrics
+description: 歌詞の配置、安全領域、文字方向と演出パターンを説明します。
+noindex: true
+---
+
+歌詞パターンは、文字表現と入場アニメーションを用途に合わせて組み合わせたコンポーネントです。以下の一覧から、フレーズに合う演出を選べます。
+
+## 配置とセーフエリア
+
+<code>LyricsLayout</code>
+は歌詞を置ける基準領域を作ります。既定値は1920×1080基準で左右50px・上下100pxです。位置は領域内の割合で、中央は
+<code>&#123; x: 0.5, y: 0.5 &#125;</code>
+です。意図的にはみ出させる場合は各パターンに<code>safeArea="ignore"</code>
+を指定します。
+
+```tsx
+<SceneLayer followsCamera={false}>
+  <LyricsLayout>
+    <LyricFade
+      from={30}
+      durationInFrames={120}
+      position={{ x: 0.5, y: 0.78 }}
+      anchor="center"
+      size="base"
+    >
+      歌詞
+    </LyricFade>
+  </LyricsLayout>
+</SceneLayer>
+```
+
+## 共通の文字設定
+
+パターンは<code>position</code>、<code>anchor</code>、<code>size</code>、<code>orientation</code>、<code>rotationDegrees</code>などで配置を調整します。白い明朝体を基本にし、画面内で読みやすい位置と背景とのコントラストを確認します。
+
+## パターン一覧
+
+| Pattern                                                                      | 動き                                           | 合うフレーズ                                                       |
+| ---------------------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------ |
+| [<code>LyricFade</code>](/lyrics/patterns/fade)                              | 歌詞全体をフェードインする基本パターン。       | 静かな導入、余韻、歌詞の意味を落ち着いて読ませたい場面。           |
+| [<code>LyricCharacterReveal</code>](/lyrics/patterns/character-reveal)       | 文字を一文字ずつ順に表示するパターン。         | 語りかけや、言葉を順に受け取ってほしいフレーズ。                   |
+| [<code>LyricGather</code>](/lyrics/patterns/gather)                          | 離れた文字が集まり、正しい位置に整うパターン。 | 散らばりからまとまりへ変わる意味や、気持ちが定まる箇所。           |
+| [<code>LyricFragmentAssembly</code>](/lyrics/patterns/fragment-assembly)     | 文字の断片が組み上がって歌詞になるパターン。   | 記憶や断片、再構成を感じさせたいフレーズ。                         |
+| [<code>LyricSlide</code>](/lyrics/patterns/slide)                            | 歌詞を横方向から滑り込ませるパターン。         | 場面の切り替わりや、視線を新しい位置へ導きたい箇所。               |
+| [<code>LyricBlink</code>](/lyrics/patterns/blink)                            | 歌詞を指定回数だけ点滅させて表示するパターン。 | 短い音のアクセントや、切れ味を出したい言葉。                       |
+| [<code>LyricLetterSpacing</code>](/lyrics/patterns/letter-spacing)           | 文字間隔が広がる、または狭まるパターン。       | 中央配置で余白を感じさせる言葉や、まとまりへ向かう箇所。           |
+| [<code>LyricCharacterScale</code>](/lyrics/patterns/character-scale)         | 一文字ずつスケールして表示するパターン。       | 短いキーワードや拍ごとに強調したいフレーズ。                       |
+| [<code>LyricCharacterUnderline</code>](/lyrics/patterns/character-underline) | 文字の出現に合わせて下線を引くパターン。       | 一文字ずつの出現を視覚的に補い、フレーズに線の動きを足したい場面。 |
+
+## API Reference
+
+### `LyricsLayout`
+
+| Prop                  | Type             | Default                             | Description                                                                                     |
+| --------------------- | ---------------- | ----------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `children`            | `ReactNode`      | —                                   | 配置する歌詞パターン。                                                                          |
+| `safeArea`            | `LyricsSafeArea` | `{ horizontal: 50, vertical: 100 }` | 全歌詞で共有するセーフエリア。値は1920×1080基準のピクセルで、コンポジション寸法に合わせて拡縮。 |
+| `safeArea.horizontal` | `number`         | `50`                                | 左右の余白。デザインピクセル単位。                                                              |
+| `safeArea.vertical`   | `number`         | `100`                               | 上下の余白。デザインピクセル単位。                                                              |

@@ -1,0 +1,51 @@
+---
+title: LightSweep
+slug: atmosphere/lighting/light-sweep
+description: 光の帯が画面を横切ります。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<AtmospherePreview demo="LightSweepDemo" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { useVideoConfig } from 'remotion'
+import { SceneLayer, SceneStage, secondsToFrameRange } from 'framoo/core'
+import { LightSweep } from 'framoo/atmosphere'
+
+export const LightSweepPreview = () => {
+  const { fps } = useVideoConfig()
+  const sweepDuration = secondsToFrameRange(0, 5, fps).durationInFrames
+
+  return (
+    <SceneStage>
+      <SceneLayer followsCamera>
+        {/* 背景画像など */}
+        <LightSweep
+          color="#fff0cb"
+          durationInFrames={sweepDuration}
+          opacity={0.78}
+          angleDegrees={25}
+        />
+      </SceneLayer>
+    </SceneStage>
+  )
+}
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop               | Type     | Default       | Description                           |
+| ------------------ | -------- | ------------- | ------------------------------------- |
+| `color`            | `string` | `#ffe5b5`     | 光の色。                              |
+| `durationInFrames` | `number` | 省略時は5秒分 | 光の帯が画面を横切る長さ。            |
+| `opacity`          | `number` | `0.16`        | 光の最大不透明度。0から1。            |
+| `angleDegrees`     | `number` | `25`          | 光の帯の角度。CSSで使う度単位の角度。 |

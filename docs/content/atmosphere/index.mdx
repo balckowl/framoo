@@ -1,0 +1,18 @@
+---
+sidebar:
+  hidden: true
+title: Atmosphere
+description: 光、色、空気、図形、粒子、フレームを画面に重ねる演出。
+noindex: true
+---
+
+Atmosphereは画面に重ねる演出です。どの<code>SceneLayer</code>に置くかで、カメラと一緒に動くか、画面に固定されるかが決まります。
+
+| 分類      | 役割                                               | 演出                                                                                                                                                                                                                                       |
+| --------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Lighting  | 光の筋や光源のフレア、拍に反応する色光を重ねます。 | [<code>LightSweep</code>](/atmosphere/lighting/light-sweep)、[<code>LensFlare</code>](/atmosphere/lighting/lens-flare)、[<code>GodRays</code>](/atmosphere/lighting/god-rays)、[<code>ColorPulse</code>](/atmosphere/lighting/color-pulse) |
+| Color     | 単色のトーンや、時間に沿って変化する色を重ねます。 | [<code>ColorOverlay</code>](/atmosphere/color/color-overlay)、[<code>ColorWash</code>](/atmosphere/color/color-wash)、[<code>ColorWashSequence</code>](/atmosphere/color/color-wash-sequence)                                              |
+| Air       | 霧や煙で、画面に空気感と奥行きを加えます。         | [<code>Fog</code>](/atmosphere/air/fog)、[<code>Smoke</code>](/atmosphere/air/smoke)                                                                                                                                                       |
+| Graphics  | 画面全体に模様を重ねます。                         | [<code>PatternOverlay</code>](/atmosphere/pattern-overlay)：縞、ドット、格子、網点、同心円、波線                                                                                                                                           |
+| Particles | 雪や雨などの粒子を画面に重ねます。                 | [<code>ParticleField</code>](/atmosphere/particle-field)：埃、花びら、火花、雪、雨                                                                                                                                                         |
+| Frame     | 画面の内側に静的な線枠を重ねます。                 | [<code>FrameOverlay</code>](/atmosphere/frame/frame-overlay)                                                                                                                                                                               |

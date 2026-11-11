@@ -1,0 +1,60 @@
+---
+title: PatternOverlay
+slug: atmosphere/pattern-overlay
+description: 6種類の模様を画面全体に重ねます。
+noindex: true
+---
+
+PatternOverlayは、`kind`で模様を選び、画面全体に重ねるコンポーネントです。
+
+<Tabs>
+  <Tab title="Preview">
+
+<AtmospherePreview collection="patterns" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { SceneLayer, SceneStage } from 'framoo/core'
+import { PatternOverlay } from 'framoo/atmosphere'
+
+export const PatternOverlayPreview = () => (
+  <SceneStage>
+    <SceneLayer followsCamera>
+      {/* 背景画像など */}
+      <PatternOverlay
+        kind="stripes"
+        color="rgba(255, 255, 255, 0.28)"
+        size={58}
+        opacity={0.68}
+        speed={16}
+      />
+    </SceneLayer>
+  </SceneStage>
+)
+```
+
+  </Tab>
+</Tabs>
+
+## 模様の種類
+
+| `kind`     | 模様                   |
+| ---------- | ---------------------- |
+| `stripes`  | 斜めの縞模様           |
+| `dots`     | ドット模様             |
+| `grid`     | 格子模様               |
+| `halftone` | 印刷の網点のような模様 |
+| `rings`    | 同心円                 |
+| `waves`    | 波のようにうねる線     |
+
+## API Reference
+
+| Prop      | Type          | Default                    | Description                                    |
+| --------- | ------------- | -------------------------- | ---------------------------------------------- |
+| `kind`    | `PatternKind` | `dots`                     | 重ねる模様の種類。上の一覧から選びます。       |
+| `color`   | `string`      | `rgba(255, 255, 255, 0.2)` | 模様の色。                                     |
+| `size`    | `number`      | `36`                       | 模様の間隔。ピクセル単位。                     |
+| `opacity` | `number`      | `0.8`                      | 模様レイヤーの不透明度。0から1。               |
+| `speed`   | `number`      | `10`                       | 模様の移動速度。ピクセル毎秒。負の値で逆方向。 |

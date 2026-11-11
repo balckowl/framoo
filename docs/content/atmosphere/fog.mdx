@@ -1,0 +1,40 @@
+---
+title: Fog
+slug: atmosphere/air/fog
+description: 薄い霧を画面に重ね、ゆっくり漂わせます。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<AtmospherePreview demo="FogDemo" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { SceneLayer, SceneStage } from 'framoo/core'
+import { Fog } from 'framoo/atmosphere'
+
+export const FogPreview = () => (
+  <SceneStage>
+    <SceneLayer followsCamera>
+      {/* 背景画像など */}
+      <Fog color="#f3f4f2" density={0.88} speed={0.07} softness={14} />
+    </SceneLayer>
+  </SceneStage>
+)
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop       | Type     | Default   | Description                              |
+| ---------- | -------- | --------- | ---------------------------------------- |
+| `color`    | `string` | `#f2f4f3` | 霧の色。                                 |
+| `density`  | `number` | `0.34`    | 霧の濃さ。0から1。                       |
+| `speed`    | `number` | `0.055`   | 漂う速度。1秒あたりの周期数。`0`で静止。 |
+| `softness` | `number` | `24`      | ぼかし半径。ピクセル単位。               |

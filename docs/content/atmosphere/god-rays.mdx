@@ -1,0 +1,53 @@
+---
+title: GodRays
+slug: atmosphere/lighting/god-rays
+description: 指定した位置を光源にして、放射状に広がる光を画面に重ねます。
+noindex: true
+---
+
+<Tabs>
+  <Tab title="Preview">
+
+<AtmospherePreview demo="GodRaysDemo" />
+
+  </Tab>
+  <Tab title="Code">
+
+```tsx
+import { SceneLayer, SceneStage } from 'framoo/core'
+import { GodRays } from 'framoo/atmosphere'
+
+export const GodRaysPreview = () => (
+  <SceneStage>
+    <SceneLayer followsCamera>
+      {/* 背景画像など */}
+      <GodRays
+        source={{ x: 0.08, y: 0.08 }}
+        angleDegrees={34}
+        spreadDegrees={46}
+        rayCount={13}
+        intensity={0.48}
+        color="#fff0c8"
+        length={1.45}
+        softness={9}
+      />
+    </SceneLayer>
+  </SceneStage>
+)
+```
+
+  </Tab>
+</Tabs>
+
+## API Reference
+
+| Prop            | Type              | Default               | Description                         |
+| --------------- | ----------------- | --------------------- | ----------------------------------- |
+| `source`        | `NormalizedPoint` | `{ x: 0.1, y: 0.08 }` | 光源の位置。x・yは画面内の割合。    |
+| `angleDegrees`  | `number`          | `38`                  | 光線の中心方向。0度は右、90度は下。 |
+| `spreadDegrees` | `number`          | `34`                  | 光線が広がる角度。                  |
+| `rayCount`      | `number`          | `11`                  | 光線の本数。1から32。               |
+| `intensity`     | `number`          | `0.12`                | 全体の強さ。0から1。                |
+| `color`         | `string`          | `#fff1c7`             | 光線の色。                          |
+| `length`        | `number`          | `1.25`                | 画面の対角線に対する光線の長さ。    |
+| `softness`      | `number`          | `14`                  | ぼかし半径。ピクセル単位。          |
